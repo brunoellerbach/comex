@@ -59,4 +59,14 @@ public class Pedido {
                 '}';
     }
 
+    public BigDecimal getValorTotal() {
+        return this.precio.multiply(new BigDecimal(this.cantidad));
+    }
+
+    public boolean isMasBaratoQue(Pedido otroPedido) {
+        return this.getValorTotal().compareTo(otroPedido.getValorTotal()) < 0;
+    }
+    public boolean isMasCaroQue(Pedido otroPedido) {
+        return this.getValorTotal().compareTo(otroPedido.getValorTotal()) > 0;
+    }
 }
