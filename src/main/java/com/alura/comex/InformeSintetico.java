@@ -13,7 +13,7 @@ import java.util.Locale;
 public class InformeSintetico {
 
     private final CategoriasProcesadas categoriasProcesadas = new CategoriasProcesadas();
-    private int totalDePedidosRealizados;
+    private final int totalDePedidosRealizados;
     private int totalDeProductosVendidos;
     private int totalDeCategorias;
     private Pedido pedidoMasBarato;
@@ -21,6 +21,7 @@ public class InformeSintetico {
     private BigDecimal montoDeVentas = BigDecimal.ZERO;
 
     public InformeSintetico(ArrayList<Pedido> pedidos) {
+        totalDePedidosRealizados = pedidos.size();
         for (int i = 0; i < pedidos.size(); i++) {
             Pedido pedidoActual = pedidos.get(i);
 
@@ -38,7 +39,6 @@ public class InformeSintetico {
 
             montoDeVentas = montoDeVentas.add(pedidoActual.getValorTotal());
             totalDeProductosVendidos += pedidoActual.getCantidad();
-            totalDePedidosRealizados++;
 
             if (!categoriasProcesadas.contains(pedidoActual.getCategoria())) {
                 totalDeCategorias++;
