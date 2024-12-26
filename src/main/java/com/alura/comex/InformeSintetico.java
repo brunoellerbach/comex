@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Locale;
 
 /**
@@ -12,8 +13,8 @@ import java.util.Locale;
  */
 public class InformeSintetico {
 
-    private final CategoriasProcesadas categoriasProcesadas = new CategoriasProcesadas();
-    private final int totalDePedidosRealizados;
+    private final HashSet<String> categoriasProcesadas = new HashSet<>();
+    private int totalDePedidosRealizados;
     private int totalDeProductosVendidos;
     private int totalDeCategorias;
     private Pedido pedidoMasBarato;
