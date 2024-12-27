@@ -4,7 +4,6 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.NumberFormat;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.Locale;
 
 /**
@@ -13,10 +12,9 @@ import java.util.Locale;
  */
 public class InformeSintetico {
 
-    private final HashSet<String> categoriasProcesadas = new HashSet<>();
     private final int totalDePedidosRealizados;
     private final int totalDeProductosVendidos;
-    private int totalDeCategorias;
+    private final int totalDeCategorias;
     private Pedido pedidoMasBarato;
     private Pedido pedidoMasCaro;
     private final BigDecimal montoDeVentas;
@@ -34,6 +32,13 @@ public class InformeSintetico {
                 .map(Pedido::getValorTotal) // Obtenemos el valor total de cada pedido
                 .reduce(BigDecimal.ZERO, BigDecimal::add); // Sumamos todos los valores totales
 
+        // Usamos un stream para calcular el total de categorías
+        totalDeCategorias = (int) pedidos.stream()
+                .filter(pedido -> pedido != null)
+                .map(Pedido::getCategoria)
+                .distinct() //Elimina los items duplicados
+                .count();
+
         pedidos.stream()
                 .filter(pedido -> pedido != null) // Filtramos pedidos no nulos
                 .forEach(pedidoActual -> { // Iteramos sobre cada pedido
@@ -43,11 +48,6 @@ public class InformeSintetico {
 
                     if (pedidoMasCaro == null || pedidoActual.isMasCaroQue(pedidoMasCaro)) {
                         pedidoMasCaro = pedidoActual;
-                    }
-
-                    if (!categoriasProcesadas.contains(pedidoActual.getCategoria())) {
-                        totalDeCategorias++;
-                        categoriasProcesadas.add(pedidoActual.getCategoria());
                     }
                 });
     }
