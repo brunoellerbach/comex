@@ -19,7 +19,7 @@ public class InformeSintetico {
     private int totalDeCategorias;
     private Pedido pedidoMasBarato;
     private Pedido pedidoMasCaro;
-    private BigDecimal montoDeVentas = BigDecimal.ZERO;
+    private final BigDecimal montoDeVentas;
 
     public InformeSintetico(ArrayList<Pedido> pedidos) {
         totalDePedidosRealizados = pedidos.size();
@@ -27,6 +27,13 @@ public class InformeSintetico {
                 .filter(pedido -> pedido != null) // Filtramos pedidos no nulos
                 .mapToInt(Pedido::getCantidad) // Convertimos cada pedido a su cantidad
                 .sum(); // Sumamos todas las cantidades
+
+        // Usamos un stream para calcular el monto de ventas
+        montoDeVentas = pedidos.stream()
+                .filter(pedido -> pedido != null) // Filtramos pedidos no nulos
+                .map(Pedido::getValorTotal) // Obtenemos el valor total de cada pedido
+                .reduce(BigDecimal.ZERO, BigDecimal::add); // Sumamos todos los valores totales
+
         pedidos.stream()
                 .filter(pedido -> pedido != null) // Filtramos pedidos no nulos
                 .forEach(pedidoActual -> { // Iteramos sobre cada pedido
@@ -37,8 +44,6 @@ public class InformeSintetico {
                     if (pedidoMasCaro == null || pedidoActual.isMasCaroQue(pedidoMasCaro)) {
                         pedidoMasCaro = pedidoActual;
                     }
-
-                    montoDeVentas = montoDeVentas.add(pedidoActual.getValorTotal());
 
                     if (!categoriasProcesadas.contains(pedidoActual.getCategoria())) {
                         totalDeCategorias++;
