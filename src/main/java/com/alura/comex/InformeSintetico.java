@@ -14,8 +14,8 @@ import java.util.Locale;
 public class InformeSintetico {
 
     private final HashSet<String> categoriasProcesadas = new HashSet<>();
-    private int totalDePedidosRealizados;
-    private int totalDeProductosVendidos;
+    private final int totalDePedidosRealizados;
+    private final int totalDeProductosVendidos;
     private int totalDeCategorias;
     private Pedido pedidoMasBarato;
     private Pedido pedidoMasCaro;
@@ -23,29 +23,28 @@ public class InformeSintetico {
 
     public InformeSintetico(ArrayList<Pedido> pedidos) {
         totalDePedidosRealizados = pedidos.size();
-        for (int i = 0; i < pedidos.size(); i++) {
-            Pedido pedidoActual = pedidos.get(i);
+        totalDeProductosVendidos = pedidos.stream()
+                .filter(pedido -> pedido != null) // Filtramos pedidos no nulos
+                .mapToInt(Pedido::getCantidad) // Convertimos cada pedido a su cantidad
+                .sum(); // Sumamos todas las cantidades
+        pedidos.stream()
+                .filter(pedido -> pedido != null) // Filtramos pedidos no nulos
+                .forEach(pedidoActual -> { // Iteramos sobre cada pedido
+                    if (pedidoMasBarato == null || pedidoActual.isMasBaratoQue(pedidoMasBarato)) {
+                        pedidoMasBarato = pedidoActual;
+                    }
 
-            if (pedidoActual == null) {
-                break;
-            }
+                    if (pedidoMasCaro == null || pedidoActual.isMasCaroQue(pedidoMasCaro)) {
+                        pedidoMasCaro = pedidoActual;
+                    }
 
-            if (pedidoMasBarato == null || pedidoActual.isMasBaratoQue(pedidoMasBarato)) {
-                pedidoMasBarato = pedidoActual;
-            }
+                    montoDeVentas = montoDeVentas.add(pedidoActual.getValorTotal());
 
-            if (pedidoMasCaro == null || pedidoActual.isMasCaroQue(pedidoMasCaro)) {
-                pedidoMasCaro = pedidoActual;
-            }
-
-            montoDeVentas = montoDeVentas.add(pedidoActual.getValorTotal());
-            totalDeProductosVendidos += pedidoActual.getCantidad();
-
-            if (!categoriasProcesadas.contains(pedidoActual.getCategoria())) {
-                totalDeCategorias++;
-                categoriasProcesadas.add(pedidoActual.getCategoria());
-            }
-        }
+                    if (!categoriasProcesadas.contains(pedidoActual.getCategoria())) {
+                        totalDeCategorias++;
+                        categoriasProcesadas.add(pedidoActual.getCategoria());
+                    }
+                });
     }
 
     public int getTotalDePedidosRealizados() {
