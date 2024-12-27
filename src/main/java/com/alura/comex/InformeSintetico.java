@@ -4,7 +4,9 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Locale;
+
 
 /**
  * Esta clase favorece el principio SOLID de Single Responsibility Principle (SRP), ya que extrajimos el comportamiento
@@ -15,8 +17,8 @@ public class InformeSintetico {
     private final int totalDePedidosRealizados;
     private final int totalDeProductosVendidos;
     private final int totalDeCategorias;
-    private Pedido pedidoMasBarato;
-    private Pedido pedidoMasCaro;
+    private final Pedido pedidoMasBarato;
+    private final Pedido pedidoMasCaro;
     private final BigDecimal montoDeVentas;
 
     public InformeSintetico(ArrayList<Pedido> pedidos) {
@@ -39,17 +41,16 @@ public class InformeSintetico {
                 .distinct() //Elimina los items duplicados
                 .count();
 
-        pedidos.stream()
-                .filter(pedido -> pedido != null) // Filtramos pedidos no nulos
-                .forEach(pedidoActual -> { // Iteramos sobre cada pedido
-                    if (pedidoMasBarato == null || pedidoActual.isMasBaratoQue(pedidoMasBarato)) {
-                        pedidoMasBarato = pedidoActual;
-                    }
+        // Usamos streams para encontrar el pedido más barato y el más caro
+        pedidoMasBarato = pedidos.stream()
+                .filter(pedido -> pedido != null)
+                .min(Comparator.comparing(Pedido::getValorTotal))
+                .orElse(null);
 
-                    if (pedidoMasCaro == null || pedidoActual.isMasCaroQue(pedidoMasCaro)) {
-                        pedidoMasCaro = pedidoActual;
-                    }
-                });
+        pedidoMasCaro = pedidos.stream()
+                .filter(pedido -> pedido != null)
+                .max(Comparator.comparing(Pedido::getValorTotal))
+                .orElse(null);
     }
 
     public int getTotalDePedidosRealizados() {
