@@ -18,8 +18,12 @@ public class Main {
         System.out.printf("- PEDIDO MAS BARATO: %s (%s)\n",
                 informeSintetico.getPedidoMasBaratoValor(), informeSintetico.getPedidoMasBaratoProducto()
         );
-        System.out.printf("- PEDIDO MAS CARO: %s (%s)\n",
+        System.out.printf("- PEDIDO MAS CARO: %s (%s)\n\n",
                 informeSintetico.getPedidoMasCaroValor(), informeSintetico.getPedidoMasCaroProducto()
         );
+
+        // Generar e imprimir informe de clientes fieles
+        System.out.println("#### INFORME DE CLIENTES FIELES\n");
+        informeSintetico.getInformeClientesFieles().forEach(System.out::println);
     }
 }

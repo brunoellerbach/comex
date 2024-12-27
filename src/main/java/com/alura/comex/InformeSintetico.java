@@ -3,9 +3,8 @@ package com.alura.comex;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.NumberFormat;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.Locale;
+import java.util.*;
+import java.util.stream.Collectors;
 
 
 /**
@@ -20,6 +19,7 @@ public class InformeSintetico {
     private final Pedido pedidoMasBarato;
     private final Pedido pedidoMasCaro;
     private final BigDecimal montoDeVentas;
+    private final Map<String, Long> pedidosPorCliente;
 
     public InformeSintetico(ArrayList<Pedido> pedidos) {
         totalDePedidosRealizados = pedidos.size();
@@ -51,6 +51,9 @@ public class InformeSintetico {
                 .filter(pedido -> pedido != null)
                 .max(Comparator.comparing(Pedido::getValorTotal))
                 .orElse(null);
+
+        pedidosPorCliente = pedidos.stream()
+                .collect(Collectors.groupingBy(Pedido::getCliente, Collectors.counting()));
     }
 
     public int getTotalDePedidosRealizados() {
@@ -84,5 +87,13 @@ public class InformeSintetico {
 
     public String getPedidoMasBaratoProducto() {
         return pedidoMasBarato.getProducto();
+    }
+
+    // Nuevo metodo para obtener el informe de clientes fieles public
+    List<String> getInformeClientesFieles() {
+        return pedidosPorCliente.entrySet().stream()
+                .sorted(Map.Entry.comparingByKey())
+                .map(entry -> String.format("NOMBRE: %s\nNº DE PEDIDOS: %d\n", entry.getKey(), entry.getValue()))
+                .collect(Collectors.toList());
     }
 }
