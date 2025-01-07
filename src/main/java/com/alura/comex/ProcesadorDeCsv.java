@@ -1,6 +1,6 @@
 package com.alura.comex;
 
-import com.opencsv.*;
+import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvException;
 
 import java.io.IOException;
