@@ -29,5 +29,9 @@ public class Main {
         // Imprimir informe de categorias
         System.out.println("#### INFORME DE CATEGORIAS\n");
         informeSintetico.getInformeCategorias().forEach(System.out::println);
+
+        // Generar e imprimir informe de los dos clientes que más gastaron
+        System.out.println("#### CLIENTES QUE MÁS GASTARON\n");
+        informeSintetico.getInformeClientesQueMasGastaron().forEach(System.out::println);
     }
 }

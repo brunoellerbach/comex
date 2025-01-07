@@ -24,37 +24,25 @@ public class InformeSintetico {
     public InformeSintetico(ArrayList<Pedido> pedidos) {
         this.pedidos = pedidos;
         totalDePedidosRealizados = pedidos.size();
-        totalDeProductosVendidos = pedidos.stream()
-                .filter(pedido -> pedido != null) // Filtramos pedidos no nulos
+        totalDeProductosVendidos = pedidos.stream().filter(pedido -> pedido != null) // Filtramos pedidos no nulos
                 .mapToInt(Pedido::getCantidad) // Convertimos cada pedido a su cantidad
                 .sum(); // Sumamos todas las cantidades
 
         // Usamos un stream para calcular el monto de ventas
-        montoDeVentas = pedidos.stream()
-                .filter(pedido -> pedido != null) // Filtramos pedidos no nulos
+        montoDeVentas = pedidos.stream().filter(pedido -> pedido != null) // Filtramos pedidos no nulos
                 .map(Pedido::getValorTotal) // Obtenemos el valor total de cada pedido
                 .reduce(BigDecimal.ZERO, BigDecimal::add); // Sumamos todos los valores totales
 
         // Usamos un stream para calcular el total de categorías
-        totalDeCategorias = (int) pedidos.stream()
-                .filter(pedido -> pedido != null)
-                .map(Pedido::getCategoria)
-                .distinct() //Elimina los items duplicados
+        totalDeCategorias = (int) pedidos.stream().filter(pedido -> pedido != null).map(Pedido::getCategoria).distinct() //Elimina los items duplicados
                 .count();
 
         // Usamos streams para encontrar el pedido más barato y el más caro
-        pedidoMasBarato = pedidos.stream()
-                .filter(pedido -> pedido != null)
-                .min(Comparator.comparing(Pedido::getValorTotal))
-                .orElse(null);
+        pedidoMasBarato = pedidos.stream().filter(pedido -> pedido != null).min(Comparator.comparing(Pedido::getValorTotal)).orElse(null);
 
-        pedidoMasCaro = pedidos.stream()
-                .filter(pedido -> pedido != null)
-                .max(Comparator.comparing(Pedido::getValorTotal))
-                .orElse(null);
+        pedidoMasCaro = pedidos.stream().filter(pedido -> pedido != null).max(Comparator.comparing(Pedido::getValorTotal)).orElse(null);
 
-        pedidosPorCliente = pedidos.stream()
-                .collect(Collectors.groupingBy(Pedido::getCliente, Collectors.counting()));
+        pedidosPorCliente = pedidos.stream().collect(Collectors.groupingBy(Pedido::getCliente, Collectors.counting()));
     }
 
     public int getTotalDePedidosRealizados() {
@@ -92,32 +80,44 @@ public class InformeSintetico {
 
     // Nuevo metodo para obtener el informe de clientes fieles public
     List<String> getInformeClientesFieles() {
-        return pedidosPorCliente.entrySet().stream()
-                .sorted(Map.Entry.comparingByKey())
-                .map(entry -> String.format("NOMBRE: %s\nNº DE PEDIDOS: %d\n", entry.getKey(), entry.getValue()))
-                .collect(Collectors.toList());
+        return pedidosPorCliente.entrySet().stream().sorted(Map.Entry.comparingByKey()).map(entry -> String.format("NOMBRE: %s\nNº DE PEDIDOS: %d\n", entry.getKey(), entry.getValue())).collect(Collectors.toList());
     }
 
     public List<String> getInformeCategorias() {
+        return pedidos.stream().filter(Objects::nonNull).collect(Collectors.groupingBy(Pedido::getCategoria)).entrySet().stream().sorted(Map.Entry.comparingByKey()).map(entry -> {
+            String categoria = entry.getKey();
+            Pedido productoMasCaro = entry.getValue().stream().max(Comparator.comparing(Pedido::getPrecio)).orElseThrow(() -> new IllegalArgumentException("No hay productos en la categoría " + categoria));
+
+            return String.format("CATEGORIA: %s\nPRODUCTO: %s\nPRECIO: %s\n", categoria, productoMasCaro.getProducto(), NumberFormat.getCurrencyInstance(new Locale("es", "AR")).format(productoMasCaro.getPrecio().setScale(2, RoundingMode.HALF_DOWN)));
+        }).collect(Collectors.toList());
+    }
+
+    public List<String> getInformeClientesQueMasGastaron() {
         return pedidos.stream()
                 .filter(Objects::nonNull)
-                .collect(Collectors.groupingBy(Pedido::getCategoria))
+                .collect(
+                        Collectors.groupingBy(
+                                Pedido::getCliente,
+                                Collectors.summingDouble(
+                                        pedido -> pedido.getPrecio()
+                                                .multiply(new BigDecimal(pedido.getCantidad()))
+                                                .doubleValue()
+                                )
+                        )
+                )
                 .entrySet().stream()
+                .sorted(Map.Entry.<String, Double>comparingByValue().reversed())
+                .limit(2)
                 .sorted(Map.Entry.comparingByKey())
                 .map(entry -> {
-                    String categoria = entry.getKey();
-                    Pedido productoMasCaro = entry.getValue().stream()
-                            .max(Comparator.comparing(Pedido::getPrecio))
-                            .orElseThrow(() -> new IllegalArgumentException("No hay productos en la categoría " + categoria));
+                    String cliente = entry.getKey();
+                    long cantidadPedidos = pedidos.stream().filter(p -> p.getCliente().equals(cliente)).count();
+                    BigDecimal montoGastado = BigDecimal.valueOf(entry.getValue());
 
-                    return String.format("CATEGORIA: %s\nPRODUCTO: %s\nPRECIO: %s\n",
-                            categoria,
-                            productoMasCaro.getProducto(),
-                            NumberFormat.getCurrencyInstance(
-                                    new Locale("es", "AR")).format(
-                                    productoMasCaro.getPrecio().setScale(2, RoundingMode.HALF_DOWN)
-                            )
-                    );
+                    return String.format("NOMBRE: %s\nNº DE PEDIDOS: %d\nMONTO GASTADO: %s\n",
+                            cliente,
+                            cantidadPedidos,
+                            NumberFormat.getCurrencyInstance(new Locale("es", "AR")).format(montoGastado.setScale(2, RoundingMode.HALF_DOWN)));
                 })
                 .collect(Collectors.toList());
     }
