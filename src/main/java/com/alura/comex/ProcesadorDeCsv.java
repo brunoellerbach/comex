@@ -1,32 +1,35 @@
 package com.alura.comex;
 
+import com.opencsv.*;
+import com.opencsv.exceptions.CsvException;
+
 import java.io.IOException;
+import java.io.Reader;
 import java.math.BigDecimal;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Scanner;
+import java.util.List;
 
-//Estamos favoreciendo el principio de responsabilidad única (La S de solid)
+// Estamos favoreciendo el principio de responsabilidad única (La S de solid)
 public class ProcesadorDeCsv {
 
-    public ArrayList<Pedido> listaPedidos(String nombreArchivoCsv){
+    public ArrayList<Pedido> listaPedidos(String nombreArchivoCsv) {
         ArrayList<Pedido> listaPedidos = new ArrayList<>();
         try {
             URL recursoCSV = ClassLoader.getSystemResource(nombreArchivoCsv);
-            Path caminoDelArchivo = Path.of(recursoCSV.toURI());
+            Path caminoDelArchivo = Paths.get(recursoCSV.toURI());
 
-            Scanner lectorDeLineas = new Scanner(caminoDelArchivo);
+            List<String[]> registros = readAllLines(caminoDelArchivo);
 
-            lectorDeLineas.nextLine();
-
-            while (lectorDeLineas.hasNextLine()) {
-                String linea = lectorDeLineas.nextLine();
-                String[] registro = linea.split(",");
-
+            // Omitimos la primera línea que contiene los nombres de las columnas
+            for (int i = 1; i < registros.size(); i++) {
+                String[] registro = registros.get(i);
                 String categoria = registro[0];
                 String producto = registro[1];
                 BigDecimal precio = new BigDecimal(registro[2]);
@@ -38,10 +41,17 @@ public class ProcesadorDeCsv {
                 listaPedidos.add(pedido);
             }
         } catch (URISyntaxException e) {
-            throw new RuntimeException("Archivo "+nombreArchivoCsv+" no localizado!");
-        } catch (IOException e) {
-            throw new RuntimeException("Error al abrir Scanner para procesar archivo!");
+            throw new RuntimeException("Archivo " + nombreArchivoCsv + " no localizado!", e);
+        } catch (IOException | CsvException e) {
+            throw new RuntimeException("Error al procesar el archivo!", e);
         }
         return listaPedidos;
+    }
+
+    public static List<String[]> readAllLines(Path filePath) throws IOException, CsvException {
+        try (Reader reader = Files.newBufferedReader(filePath);
+             CSVReader csvReader = new CSVReader(reader)) {
+            return csvReader.readAll();
+        }
     }
 }
