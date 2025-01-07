@@ -25,5 +25,9 @@ public class Main {
         // Generar e imprimir informe de clientes fieles
         System.out.println("#### INFORME DE CLIENTES FIELES\n");
         informeSintetico.getInformeClientesFieles().forEach(System.out::println);
+
+        // Imprimir informe de categorias
+        System.out.println("#### INFORME DE CATEGORIAS\n");
+        informeSintetico.getInformeCategorias().forEach(System.out::println);
     }
 }

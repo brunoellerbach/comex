@@ -6,7 +6,6 @@ import java.text.NumberFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 
-
 /**
  * Esta clase favorece el principio SOLID de Single Responsibility Principle (SRP), ya que extrajimos el comportamiento
  * de generar el informe, y lo colocamos en una clase específica para eso.
@@ -20,8 +19,10 @@ public class InformeSintetico {
     private final Pedido pedidoMasCaro;
     private final BigDecimal montoDeVentas;
     private final Map<String, Long> pedidosPorCliente;
+    private final List<Pedido> pedidos;
 
     public InformeSintetico(ArrayList<Pedido> pedidos) {
+        this.pedidos = pedidos;
         totalDePedidosRealizados = pedidos.size();
         totalDeProductosVendidos = pedidos.stream()
                 .filter(pedido -> pedido != null) // Filtramos pedidos no nulos
@@ -94,6 +95,30 @@ public class InformeSintetico {
         return pedidosPorCliente.entrySet().stream()
                 .sorted(Map.Entry.comparingByKey())
                 .map(entry -> String.format("NOMBRE: %s\nNº DE PEDIDOS: %d\n", entry.getKey(), entry.getValue()))
+                .collect(Collectors.toList());
+    }
+
+    public List<String> getInformeCategorias() {
+        return pedidos.stream()
+                .filter(Objects::nonNull)
+                .collect(Collectors.groupingBy(Pedido::getCategoria))
+                .entrySet().stream()
+                .sorted(Map.Entry.comparingByKey())
+                .map(entry -> {
+                    String categoria = entry.getKey();
+                    Pedido productoMasCaro = entry.getValue().stream()
+                            .max(Comparator.comparing(Pedido::getPrecio))
+                            .orElseThrow(() -> new IllegalArgumentException("No hay productos en la categoría " + categoria));
+
+                    return String.format("CATEGORIA: %s\nPRODUCTO: %s\nPRECIO: %s\n",
+                            categoria,
+                            productoMasCaro.getProducto(),
+                            NumberFormat.getCurrencyInstance(
+                                    new Locale("es", "AR")).format(
+                                    productoMasCaro.getPrecio().setScale(2, RoundingMode.HALF_DOWN)
+                            )
+                    );
+                })
                 .collect(Collectors.toList());
     }
 }
