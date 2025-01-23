@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pedidos>
+    <pedido>
+        <categoria>INFORMÁTICA</categoria>
+        <producto>Notebook Samsung</producto>
+        <precio>604346.37</precio>
+        <cantidad>1</cantidad>
+        <fecha>01/01/2024</fecha>
+        <cliente>ANA</cliente>
+    </pedido>
+    <pedido>
+        <categoria>MUEBLES</categoria>
+        <producto>Sofá 3 lugares</producto>
+        <precio>428857.77</precio>
+        <cantidad>1</cantidad>
+        <fecha>05/01/2024</fecha>
+        <cliente>ANA</cliente>
+    </pedido>
+    <pedido>
+        <categoria>LIBROS</categoria>
+        <producto>Clean Architecture</producto>
+        <precio>17651.79</precio>
+        <cantidad>2</cantidad>
+        <fecha>08/01/2024</fecha>
+        <cliente>ANA</cliente>
+    </pedido>
+    <pedido>
+        <categoria>MUEBLES</categoria>
+        <producto>Mesa para cenar 6 lugares</producto>
+        <precio>631089.94</precio>
+        <cantidad>1</cantidad>
+        <fecha>06/01/2024</fecha>
+        <cliente>ELI</cliente>
+    </pedido>
+    <pedido>
+        <categoria>CELULARES</categoria>
+        <producto>iPhone 16 Pro</producto>
+        <precio>1574079.55</precio>
+        <cantidad>6</cantidad>
+        <fecha>13/01/2024</fecha>
+        <cliente>ANA</cliente>
+    </pedido>
+    <pedido>
+        <categoria>INFORMÁTICA</categoria>
+        <producto>Monitor Dell 27&quot;</producto>
+        <precio>324044.93</precio>
+        <cantidad>3</cantidad>
+        <fecha>04/01/2024</fecha>
+        <cliente>DANI</cliente>
+    </pedido>
+    <pedido>
+        <categoria>LIBROS</categoria>
+        <producto>Implementing Domain-Driven Design</producto>
+        <precio>24714.22</precio>
+        <cantidad>3</cantidad>
+        <fecha>10/01/2024</fecha>
+        <cliente>GABI</cliente>
+    </pedido>
+    <pedido>
+        <categoria>AUTOMOTOR</categoria>
+        <producto>Juego de neumáticos</producto>
+        <precio>219024.52</precio>
+        <cantidad>1</cantidad>
+        <fecha>15/01/2024</fecha>
+        <cliente>BIA</cliente>
+    </pedido>
+    <pedido>
+        <categoria>LIBROS</categoria>
+        <producto>Clean Code</producto>
+        <precio>16325.76</precio>
+        <cantidad>1</cantidad>
+        <fecha>09/01/2024</fecha>
+        <cliente>BIA</cliente>
+    </pedido>
+    <pedido>
+        <categoria>CELULARES</categoria>
+        <producto>Galaxy S24 Ultra</producto>
+        <precio>1466539.18</precio>
+        <cantidad>5</cantidad>
+        <fecha>14/01/2024</fecha>
+        <cliente>DANI</cliente>
+    </pedido>
+    <pedido>
+        <categoria>INFORMÁTICA</categoria>
+        <producto>Macbook Pro 16&quot;</producto>
+        <precio>5446836.73</precio>
+        <cantidad>1</cantidad>
+        <fecha>03/01/2024</fecha>
+        <cliente>CAIO</cliente>
+    </pedido>
+    <pedido>
+        <categoria>LIBROS</categoria>
+        <producto>Refactoring Improving the Design of Existing Code</producto>
+        <precio>29831.35</precio>
+        <cantidad>1</cantidad>
+        <fecha>12/01/2024</fecha>
+        <cliente>DANI</cliente>
+    </pedido>
+    <pedido>
+        <categoria>MUEBLES</categoria>
+        <producto>Cama queen size</producto>
+        <precio>531783.63</precio>
+        <cantidad>2</cantidad>
+        <fecha>07/01/2024</fecha>
+        <cliente>DANI</cliente>
+    </pedido>
+    <pedido>
+        <categoria>AUTOMOTOR</categoria>
+        <producto>Central multimidia</producto>
+        <precio>121998.03</precio>
+        <cantidad>1</cantidad>
+        <fecha>16/01/2024</fecha>
+        <cliente>CAIO</cliente>
+    </pedido>
+    <pedido>
+        <categoria>LIBROS</categoria>
+        <producto>Building Microservices</producto>
+        <precio>51510.96</precio>
+        <cantidad>2</cantidad>
+        <fecha>11/01/2024</fecha>
+        <cliente>CAIO</cliente>
+    </pedido>
+    <pedido>
+        <categoria>INFORMÁTICA</categoria>
+        <producto>Galaxy Tab S10</producto>
+        <precio>1018811.67</precio>
+        <cantidad>4</cantidad>
+        <fecha>02/01/2024</fecha>
+        <cliente>BIA</cliente>
+    </pedido>
+</pedidos>
