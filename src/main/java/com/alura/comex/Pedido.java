@@ -14,6 +14,9 @@ public class Pedido {
 
     private LocalDate fecha;
 
+    public Pedido() {
+    }
+
     public Pedido(String categoria, String producto, String cliente, BigDecimal precio, int cantidad, LocalDate fecha) {
         this.categoria = categoria;
         this.producto = producto;

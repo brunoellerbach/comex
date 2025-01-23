@@ -1,0 +1,130 @@
+[
+  {
+    "categoria": "INFORMÁTICA",
+    "producto": "Notebook Samsung",
+    "precio": 604346.37,
+    "cantidad": 1,
+    "fecha": "01/01/2024",
+    "cliente": "ANA"
+  },
+  {
+    "categoria": "MUEBLES",
+    "producto": "Sofá 3 lugares",
+    "precio": 428857.77,
+    "cantidad": 1,
+    "fecha": "05/01/2024",
+    "cliente": "ANA"
+  },
+  {
+    "categoria": "LIBROS",
+    "producto": "Clean Architecture",
+    "precio": 17651.79,
+    "cantidad": 2,
+    "fecha": "08/01/2024",
+    "cliente": "ANA"
+  },
+  {
+    "categoria": "MUEBLES",
+    "producto": "Mesa para cenar 6 lugares",
+    "precio": 631089.94,
+    "cantidad": 1,
+    "fecha": "06/01/2024",
+    "cliente": "ELI"
+  },
+  {
+    "categoria": "CELULARES",
+    "producto": "iPhone 16 Pro",
+    "precio": 1574079.55,
+    "cantidad": 6,
+    "fecha": "13/01/2024",
+    "cliente": "ANA"
+  },
+  {
+    "categoria": "INFORMÁTICA",
+    "producto": "Monitor Dell 27",
+    "precio": 324044.93,
+    "cantidad": 3,
+    "fecha": "04/01/2024",
+    "cliente": "DANI"
+  },
+  {
+    "categoria": "LIBROS",
+    "producto": "Implementing Domain-Driven Design",
+    "precio": 24714.22,
+    "cantidad": 3,
+    "fecha": "10/01/2024",
+    "cliente": "GABI"
+  },
+  {
+    "categoria": "AUTOMOTOR",
+    "producto": "Juego de neumáticos",
+    "precio": 219024.52,
+    "cantidad": 1,
+    "fecha": "15/01/2024",
+    "cliente": "BIA"
+  },
+  {
+    "categoria": "LIBROS",
+    "producto": "Clean Code",
+    "precio": 16325.76,
+    "cantidad": 1,
+    "fecha": "09/01/2024",
+    "cliente": "BIA"
+  },
+  {
+    "categoria": "CELULARES",
+    "producto": "Galaxy S24 Ultra",
+    "precio": 1466539.18,
+    "cantidad": 5,
+    "fecha": "14/01/2024",
+    "cliente": "DANI"
+  },
+  {
+    "categoria": "INFORMÁTICA",
+    "producto": "Macbook Pro 16",
+    "precio": 5446836.73,
+    "cantidad": 1,
+    "fecha": "03/01/2024",
+    "cliente": "CAIO"
+  },
+  {
+    "categoria": "LIBROS",
+    "producto": "Refactoring Improving the Design of Existing Code",
+    "precio": 29831.35,
+    "cantidad": 1,
+    "fecha": "12/01/2024",
+    "cliente": "DANI"
+  },
+  {
+    "categoria": "MUEBLES",
+    "producto": "Cama queen size",
+    "precio": 531783.63,
+    "cantidad": 2,
+    "fecha": "07/01/2024",
+    "cliente": "DANI"
+  },
+  {
+    "categoria": "AUTOMOTOR",
+    "producto": "Central multimidia",
+    "precio": 121998.03,
+    "cantidad": 1,
+    "fecha": "16/01/2024",
+    "cliente": "CAIO"
+  },
+  {
+    "categoria": "LIBROS",
+    "producto": "Building Microservices",
+    "precio": 51510.96,
+    "cantidad": 2,
+    "fecha": "11/01/2024",
+    "cliente": "CAIO"
+  },
+  {
+    "categoria": "INFORMÁTICA",
+    "producto": "Galaxy Tab S10",
+    "precio": 1018811.67,
+    "cantidad": 4,
+    "fecha": "02/01/2024",
+    "cliente": "BIA"
+  }
+]

@@ -1,5 +1,6 @@
-package com.alura.comex;
+package com.alura.comex.repository;
 
+import com.alura.comex.Pedido;
 import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvException;
 
@@ -17,9 +18,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 // Estamos favoreciendo el principio de responsabilidad única (La S de solid)
-public class ProcesadorDeCsv {
+public class ProcesadorDeCsv implements ProcesadorDeArchivo {
 
-    public ArrayList<Pedido> listaPedidos(String nombreArchivoCsv) {
+    @Override
+    public ArrayList<Pedido> listaPedidos(String nombreArchivoCsv) throws IOException {
         ArrayList<Pedido> listaPedidos = new ArrayList<>();
         try {
             URL recursoCSV = ClassLoader.getSystemResource(nombreArchivoCsv);
@@ -27,7 +29,6 @@ public class ProcesadorDeCsv {
 
             List<String[]> registros = readAllLines(caminoDelArchivo);
 
-            // Omitimos la primera línea que contiene los nombres de las columnas
             for (int i = 1; i < registros.size(); i++) {
                 String[] registro = registros.get(i);
                 String categoria = registro[0];
@@ -40,15 +41,13 @@ public class ProcesadorDeCsv {
                 Pedido pedido = new Pedido(categoria, producto, cliente, precio, cantidad, fecha);
                 listaPedidos.add(pedido);
             }
-        } catch (URISyntaxException e) {
-            throw new RuntimeException("Archivo " + nombreArchivoCsv + " no localizado!", e);
-        } catch (IOException | CsvException e) {
+        } catch (URISyntaxException | CsvException e) {
             throw new RuntimeException("Error al procesar el archivo!", e);
         }
         return listaPedidos;
     }
 
-    public static List<String[]> readAllLines(Path filePath) throws IOException, CsvException {
+    private List<String[]> readAllLines(Path filePath) throws IOException, CsvException {
         try (Reader reader = Files.newBufferedReader(filePath);
              CSVReader csvReader = new CSVReader(reader)) {
             return csvReader.readAll();
