@@ -18,7 +18,8 @@ public class ProcesadorDeJson implements ProcesadorDeArchivo {
         JavaTimeModule module = new JavaTimeModule();
         module.addDeserializer(LocalDate.class, new LocalDateDeserializer());
         objectMapper.registerModule(module);
-        List<Pedido> pedidos = objectMapper.readValue(new File(archivo), new TypeReference<List<Pedido>>() {});
+        List<Pedido> pedidos = objectMapper.readValue(new File(archivo), new TypeReference<>() {
+        });
         return new ArrayList<>(pedidos);
     }
 }
