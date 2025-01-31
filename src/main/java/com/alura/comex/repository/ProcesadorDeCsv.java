@@ -4,8 +4,7 @@ import com.alura.comex.Pedido;
 import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvException;
 
-import java.io.IOException;
-import java.io.Reader;
+import java.io.*;
 import java.math.BigDecimal;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -19,15 +18,11 @@ import java.util.List;
 
 // Estamos favoreciendo el principio de responsabilidad única (La S de solid)
 public class ProcesadorDeCsv implements ProcesadorDeArchivo {
-
     @Override
-    public ArrayList<Pedido> listaPedidos(String nombreArchivoCsv) throws IOException {
+    public ArrayList<Pedido> listaPedidos(InputStream inputStream) throws IOException {
         ArrayList<Pedido> listaPedidos = new ArrayList<>();
-        try {
-            URL recursoCSV = ClassLoader.getSystemResource(nombreArchivoCsv);
-            Path caminoDelArchivo = Paths.get(recursoCSV.toURI());
-
-            List<String[]> registros = readAllLines(caminoDelArchivo);
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {
+            List<String[]> registros = readAllLines(reader);
 
             for (int i = 1; i < registros.size(); i++) {
                 String[] registro = registros.get(i);
@@ -41,15 +36,14 @@ public class ProcesadorDeCsv implements ProcesadorDeArchivo {
                 Pedido pedido = new Pedido(categoria, producto, cliente, precio, cantidad, fecha);
                 listaPedidos.add(pedido);
             }
-        } catch (URISyntaxException | CsvException e) {
+        } catch (CsvException e) {
             throw new RuntimeException("Error al procesar el archivo!", e);
         }
         return listaPedidos;
     }
 
-    private List<String[]> readAllLines(Path filePath) throws IOException, CsvException {
-        try (Reader reader = Files.newBufferedReader(filePath);
-             CSVReader csvReader = new CSVReader(reader)) {
+    private List<String[]> readAllLines(BufferedReader reader) throws IOException, CsvException {
+        try (CSVReader csvReader = new CSVReader(reader)) {
             return csvReader.readAll();
         }
     }

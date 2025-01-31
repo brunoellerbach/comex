@@ -3,7 +3,9 @@ package com.alura.comex;
 import com.alura.comex.repository.ProcesadorDeArchivo;
 import com.alura.comex.repository.ProcesadorDeXml;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 
 public class Main {
@@ -11,8 +13,12 @@ public class Main {
     public static void main(String[] args) {
         ProcesadorDeArchivo procesador = new ProcesadorDeXml(); // Cambia esto si quieres usar ProcesadorDeCsv
 
-        try {
-            ArrayList<Pedido> pedidos = procesador.listaPedidos("src/main/resources/pedidos.xml");
+        try (InputStream inputStream = Main.class.getResourceAsStream("/pedidos.xml")){
+
+            if (inputStream == null) {
+                throw new FileNotFoundException("Archivo pedidos.xml no encontrado en el classpath");
+            }
+            ArrayList<Pedido> pedidos = procesador.listaPedidos(inputStream);
 
             InformeSintetico informeSintetico = new InformeSintetico(pedidos);
 
