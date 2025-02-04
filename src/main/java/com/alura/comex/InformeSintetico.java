@@ -57,21 +57,32 @@ public class InformeSintetico {
         return totalDeCategorias;
     }
 
-    public String getMontoDeVentas() {
-        //Pueden cambiar el Locale a la moneda de su pais, siguiendo esta documentación: https://www.oracle.com/java/technologies/javase/java8locales.html
-        return NumberFormat.getCurrencyInstance(new Locale("es", "AR")).format(montoDeVentas.setScale(2, RoundingMode.HALF_DOWN));
+    public BigDecimal getMontoDeVentas() {
+        return montoDeVentas.setScale(2, RoundingMode.HALF_DOWN);
     }
 
-    public String getPedidoMasCaroValor() {
-        return NumberFormat.getCurrencyInstance(new Locale("es", "AR")).format(pedidoMasCaro.getPrecio().multiply(new BigDecimal(pedidoMasCaro.getCantidad())).setScale(2, RoundingMode.HALF_DOWN));
+    public String getMontoDeVentasFormateado() {
+        return NumberFormat.getCurrencyInstance(new Locale("es", "AR")).format(getMontoDeVentas());
+    }
+
+    public BigDecimal getPedidoMasCaroValor() {
+        return pedidoMasCaro.getPrecio().multiply(new BigDecimal(pedidoMasCaro.getCantidad())).setScale(2, RoundingMode.HALF_DOWN);
+    }
+
+    public String getPedidoMasCaroValorFormateado() {
+        return NumberFormat.getCurrencyInstance(new Locale("es", "AR")).format(getPedidoMasCaroValor());
     }
 
     public String getPedidoMasCaroProducto() {
         return pedidoMasCaro.getProducto();
     }
 
-    public String getPedidoMasBaratoValor() {
-        return NumberFormat.getCurrencyInstance(new Locale("es", "AR")).format(pedidoMasBarato.getPrecio().multiply(new BigDecimal(pedidoMasBarato.getCantidad())).setScale(2, RoundingMode.HALF_DOWN));
+    public BigDecimal getPedidoMasBaratoValor() {
+        return pedidoMasBarato.getPrecio().multiply(new BigDecimal(pedidoMasBarato.getCantidad())).setScale(2, RoundingMode.HALF_DOWN);
+    }
+
+    public String getPedidoMasBaratoValorFormateado() {
+        return NumberFormat.getCurrencyInstance(new Locale("es", "AR")).format(getPedidoMasBaratoValor());
     }
 
     public String getPedidoMasBaratoProducto() {
