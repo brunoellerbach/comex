@@ -11,7 +11,6 @@ import java.util.Scanner;
 public class Main {
 
     public static void main(String[] args) {
-        CacheInforme cache = CacheInforme.getInstance(); // Obtén la instancia del caché
         Scanner scanner = new Scanner(System.in);
 
         while (true) {
@@ -56,15 +55,7 @@ public class Main {
                 ArrayList<Pedido> pedidos = procesador.listaPedidos(inputStream);
 
                 // Intenta recuperar el informe del caché
-                InformeSintetico informeSintetico = cache.getInforme(nombreArchivo);
-                if (informeSintetico == null) {
-                    // Si no está en el caché, genera el informe y guárdalo en el caché
-                    System.out.println("Generando nuevo informe...");
-                    informeSintetico = new InformeSintetico(pedidos);
-                    cache.putInforme(nombreArchivo, informeSintetico);
-                } else {
-                    System.out.println("Utilizando informe existente del caché.");
-                }
+                InformeSintetico informeSintetico = new InformeSintetico(pedidos);
 
                 mostrarInforme(informeSintetico);
             } catch (IOException e) {
