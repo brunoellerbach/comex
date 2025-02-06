@@ -12,17 +12,25 @@ public class Main {
 
     public static void main(String[] args) {
         ProcesadorDeArchivo procesador = new ProcesadorDeCsv();
+        CacheInforme cache = CacheInforme.getInstance();
 
         String nombreArchivo = "pedidos.csv";
 
-        try (InputStream inputStream = Main.class.getResourceAsStream("/".concat(nombreArchivo))){
+        try (InputStream inputStream = Main.class.getResourceAsStream("/".concat(nombreArchivo))) {
 
             if (inputStream == null) {
-                throw new FileNotFoundException("Archivo "+nombreArchivo+" no encontrado en el classpath");
+                throw new FileNotFoundException("Archivo " + nombreArchivo + " no encontrado en el classpath");
             }
             ArrayList<Pedido> pedidos = procesador.listaPedidos(inputStream);
 
-            InformeSintetico informeSintetico = new InformeSintetico(pedidos);
+            InformeSintetico informeSintetico = cache.getInforme(nombreArchivo);
+            if (informeSintetico == null) {
+                System.out.println("Generando nuevo informe...");
+                informeSintetico = new InformeSintetico(pedidos);
+                cache.putInforme(nombreArchivo, informeSintetico);
+            } else {
+                System.out.println("Utilizando informe existente del caché.");
+            }
 
             System.out.println("#### INFORME DE VALORES TOTALES");
             System.out.printf("- TOTAL DE PEDIDOS REALIZADOS: %s\n", informeSintetico.getTotalDePedidosRealizados());
